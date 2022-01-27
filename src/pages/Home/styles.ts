@@ -88,7 +88,7 @@ export const Aside = styled.div`
     }
 
     &:hover {
-      color: ${shade(0.2, '#071860')};
+      color: ${shade(0.2, '#fff')};
     }
   }
 `;

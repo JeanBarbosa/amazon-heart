@@ -1,6 +1,22 @@
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
+
+:root {
+    --color-primary: #3EB489;
+    --color-secondary: #FB6D3A;
+    --color-tertiary: #ffffff;
+    --color-quaternary: #000000;
+    --color-quinary: #eeeeee;
+    --color-sextinary: #7a8099;
+
+    --color-green: #126e51;
+    --color-blue: #071860;
+    --color-yellow: #FAFF00;
+    --color-border: #bdc4c9;
+    --color-text-gray: #666666;
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -9,8 +25,8 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #3EB489;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-tertiary);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -40,21 +56,6 @@ export default createGlobalStyle`
 
   ::-webkit-scrollbar-thumb:vertical {
     height: 30px;
-    background-color: #071860;
-  }
-
-  :root {
-    --color-primary: #3EB489;
-    --color-secondary: #FB6D3A;
-    --color-tertiary: #ffffff;
-    --color-quaternary: #000000;
-    --color-quinary: #eeeeee;
-    --color-sextinary: #7a8099;
-
-    --color-green: #126e51;
-    --color-blue: #071860;
-    --color-yellow: #FAFF00;
-    --color-border: #bdc4c9;
-    --color-text-gray: #666666;
+    background-color: var(--color-blue);
   }
 `;
