@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  height: 100vh;
+
+  background: var(--color-tertiary);
+`;
 
 export const Header = styled.header`
   padding: 10px 0;
-  background: var(--color-blue);
+  background: var(--color-primary);
 `;
 
 export const HeaderContent = styled.div`

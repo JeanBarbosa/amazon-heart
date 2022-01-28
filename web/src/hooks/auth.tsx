@@ -6,7 +6,7 @@ interface User {
   id: string;
   username: string;
   email: string;
-  photo: string;
+  avatar: string;
 }
 
 interface AuthState {
@@ -43,7 +43,7 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
+    const response = await api.post('login', {
       email,
       password,
     });

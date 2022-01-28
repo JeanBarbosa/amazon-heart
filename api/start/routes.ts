@@ -32,6 +32,8 @@ Route.post('login', 'SessionsController.store')
 Route.post('forgotpasswords', 'ForgotPasswordsController.store')
 Route.put('forgotpasswords', 'ForgotPasswordsController.update')
 
+Route.get('inpe', 'INPEController.index')
+
 //Hearts
 Route.group(() => {
   Route.resource('hearts', 'HeartsController').apiOnly()

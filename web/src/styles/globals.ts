@@ -11,7 +11,7 @@ export default createGlobalStyle`
     --color-sextinary: #7a8099;
 
     --color-green: #126e51;
-    --color-blue: #071860;
+    --color-blue: #4254f5;
     --color-yellow: #FAFF00;
     --color-border: #bdc4c9;
     --color-text-gray: #666666;

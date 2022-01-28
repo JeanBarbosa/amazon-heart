@@ -153,8 +153,8 @@ const Profile: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <AvatarInput>
-            {user.photo ? <img
-              src={user.photo}
+            {user.avatar ? <img
+              src={user.avatar}
               alt={user.username}
             /> : <img
               src={Userdefault}

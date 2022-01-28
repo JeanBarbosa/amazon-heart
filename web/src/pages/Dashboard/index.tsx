@@ -25,11 +25,11 @@ const Dashboard: React.FC = () => {
     <Container>
       <Header>
         <HeaderContent>
-          <img src={logoImg} alt="amazon heart" width="220px" />
+          <img src={logoImg} alt="amazon heart" width="110px" />
 
           <Profile>
-            {user.photo ? <img
-              src={user.photo}
+            {user.avatar ? <img
+              src={user.avatar}
               alt={user.username}
             /> : <img
               src={Userdefault}
@@ -52,7 +52,7 @@ const Dashboard: React.FC = () => {
 
       <Content>
         <Schedule>
-          <h1>Análises em andamento</h1>
+          <h1>Ultima atualizacao</h1>
           <p>
             aqui show
           </p>
@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
         </Schedule>
 
         <Calendar>
-          Simulador
+          Alertas
         </Calendar>
       </Content>
     </Container>
