@@ -102,6 +102,7 @@ export const Content = styled.div`
     background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
     box-shadow: none;
+    min-width: 640px;
   }
 
   .map-popup .leaflet-popup-content h3 {
