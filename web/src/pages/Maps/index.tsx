@@ -1,18 +1,18 @@
 import "leaflet/dist/leaflet.css";
 
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Leaflet from "leaflet";
 import { v4 as uuidv4 } from "uuid";
 
 import { fetchLocalMapBox, token } from "../../services/mapbox";
-import AsyncSelect from "react-select/async";
+//import AsyncSelect from "react-select/async";
+import Select from 'react-select'
 
 import mapPackage from "../../assets/map/package.svg";
 import mapPin from "../../assets/map/pin.svg";
 import { Container, Content } from './styles'
-// import { searchImage } from '../../services/inpe';
-import testeFetch from '../../services/testeFetch'
+import { getStates, getCities, getCounties } from '../../services/ibge'
 
 const initialPosition = { lat: -3.044653, lng: -60.1071926 };
 
@@ -30,11 +30,8 @@ const mapPinIcon = Leaflet.icon({
   popupAnchor: [170, 2],
 });
 
-interface Delivery {
+interface Heart {
   id: string;
-  name: string;
-  address: string;
-  complement: string;
   latitude: number;
   longitude: number;
 }
@@ -45,16 +42,12 @@ type Position = {
 };
 
 function Maps() {
-  const [deliveries, setDeliveries] = useState<Delivery[]>([]);
+  const [hearts, setHearts] = useState<Heart[]>([]);
 
   const [position, setPosition] = useState<Position | null>(null);
-
-  const [name, setName] = useState("");
-  const [complement, setComplement] = useState("");
-  const [address, setAddress] = useState<{
-    label: string;
-    value: string;
-  } | null>(null);
+  const [states, setStates] = useState([])
+  const [cities, setCities] = useState([])
+  const [counties, setCounties] = useState([]);
 
   const [location, setLocation] = useState(initialPosition);
 
@@ -75,16 +68,59 @@ function Maps() {
     callback(places);
   };
 
-  const handleChangeSelect = (event: any) => {
+  const loadStates = async () => {
+    const response = await getStates();
 
-    testeFetch()
+    let states: any = [];
+
+    response.map((item: any) => {
+      states.push({
+        label: item.nome,
+        value: item.sigla,
+      });
+    });
+
+    setStates(states)
+  };
+
+  const loadCities = async (uf: string) => {
+    setCities([])
+    const response = await getCities(uf);
+
+    let cities: any = [];
+
+    response.map((item: any) => {
+      cities.push({
+        label: item.nome,
+        value: item.id,
+      });
+    });
+
+    setCities(cities)
+  };
+
+  const loadCounties = async (city: string) => {
+    setCounties([])
+    const response = await getCounties(city);
+
+    let counties: any = [];
+
+    response.map((item: any) => {
+      counties.push({
+        label: item.nome,
+        value: item.id,
+      });
+    });
+
+    setCounties(counties)
+  }
+
+  const handleChangeSelect = (event: any) => {
 
     setPosition({
       longitude: event.coords[0],
       latitude: event.coords[1],
     });
-
-    setAddress({ label: event.place, value: event.place });
 
     setLocation({
       lng: event.coords[0],
@@ -95,25 +131,23 @@ function Maps() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!address || !name) return;
+    //if (!state || !city) return;
 
-    setDeliveries([
-      ...deliveries,
+    setHearts([
+      ...hearts,
       {
         id: uuidv4(),
-        name,
-        address: address?.value || "",
-        complement,
         latitude: location.lat,
         longitude: location.lng,
       },
     ]);
 
-    setName("");
-    setAddress(null);
-    setComplement("");
     setPosition(null);
   }
+
+  useEffect(() => {
+    loadStates()
+  }, [])
 
   return (
     <Container>
@@ -124,16 +158,41 @@ function Maps() {
               <legend>Procurar</legend>
 
               <div className="input-block">
-                <label htmlFor="name">Nome</label>
-                <input
-                  id="name"
-                  placeholder="Nome"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
+                <label htmlFor="state">Estado</label>
+                <Select
+                  name="state"
+                  classNamePrefix="filter"
+                  options={states}
+                  placeholder="Selecionar estado..."
+                  onChange={(ev: any) => {
+                    loadCities(ev.value)
+                  }}
+                />
+              </div>
+              <div className="input-block">
+                <label htmlFor="city">Cidade</label>
+                <Select
+                  name="city"
+                  classNamePrefix="filter"
+                  options={cities}
+                  placeholder="Selecionar cidade..."
+                  onChange={(ev: any) => {
+                    loadCounties(ev.value)
+                  }}
                 />
               </div>
 
               <div className="input-block">
+                <label htmlFor="county">Município</label>
+                <Select
+                  name="county"
+                  classNamePrefix="filter"
+                  options={counties}
+                  placeholder="Selecionar município..."
+                />
+              </div>
+
+              {/* <div className="input-block">
                 <label htmlFor="address">Endereço</label>
                 <AsyncSelect
                   placeholder="Digite o endereço..."
@@ -143,17 +202,7 @@ function Maps() {
                   onChange={handleChangeSelect}
                   value={address}
                 />
-              </div>
-
-              <div className="input-block">
-                <label htmlFor="complement">Complemento</label>
-                <input
-                  placeholder="Apto / Nr / Casa..."
-                  id="complement"
-                  value={complement}
-                  onChange={(event) => setComplement(event.target.value)}
-                />
-              </div>
+              </div> */}
             </fieldset>
 
             <button className="confirm-button" type="submit">
@@ -179,11 +228,11 @@ function Maps() {
             ></Marker>
           )}
 
-          {deliveries.map((delivery) => (
+          {hearts.map((heart) => (
             <Marker
-              key={delivery.id}
+              key={heart.id}
               icon={mapPackageIcon}
-              position={[delivery.latitude, delivery.longitude]}
+              position={[heart.latitude, heart.longitude]}
             >
               <Popup
                 closeButton={false}
@@ -192,9 +241,9 @@ function Maps() {
                 className="map-popup"
               >
                 <div>
-                  <h3>{delivery.name}</h3>
+                  <h3>TEST 1</h3>
                   <p>
-                    {delivery.address} - {delivery.complement}
+                    Loreip sum
                   </p>
                 </div>
               </Popup>
