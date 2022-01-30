@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useRef } from 'react';
-import { FiUser, FiMail, FiLock, FiCamera, FiArrowLeft } from 'react-icons/fi';
+import { FiUser, FiPower, FiMail, FiLock, FiCamera, FiArrowLeft } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -30,8 +30,7 @@ const Profile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
   const history = useHistory();
-
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, signOut } = useAuth();
 
   const handleSubmit = useCallback(
     async (data: ProfileFormData) => {
@@ -196,6 +195,9 @@ const Profile: React.FC = () => {
           />
 
           <Button type="submit">Confirmar mudanças</Button>
+          <button type="button" onClick={signOut}>
+            <FiPower />
+          </button>
         </Form>
       </Content>
     </Container>

@@ -3,8 +3,8 @@ import { format, subMonths } from 'date-fns';
 import * as https from 'https'
 
 export interface IRequestINPE {
-  latitude: number,
-  longitude: number
+  latitude: number;
+  longitude: number;
 }
 
 class INPEService {
