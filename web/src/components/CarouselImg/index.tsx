@@ -8,6 +8,7 @@ import { format } from 'date-fns'
 export interface Props {
   latitude: number;
   longitude: number;
+  showThumbs?: boolean;
 }
 
 export interface ISatelite {
@@ -17,7 +18,7 @@ export interface ISatelite {
   thumbnail: any;
 }
 
-const CarouselImg: React.FC<Props> = ({ latitude, longitude }) => {
+const CarouselImg: React.FC<Props> = ({ latitude, longitude, showThumbs = true }) => {
 
   const [satelites, setSatelites] = useState<ISatelite[]>([])
 
@@ -32,9 +33,8 @@ const CarouselImg: React.FC<Props> = ({ latitude, longitude }) => {
 
   return (
     <Container>
-      <h1>Carousel in React</h1>
       <Carousel
-        showThumbs={true}
+        showThumbs={showThumbs}
         showStatus={false}
         infiniteLoop
         // emulateTouch
@@ -44,6 +44,7 @@ const CarouselImg: React.FC<Props> = ({ latitude, longitude }) => {
         // axis="vertical"
         // selectedItem={1}
         width="600px"
+        showIndicators={showThumbs}
       >
         {
           satelites.map((item) => (

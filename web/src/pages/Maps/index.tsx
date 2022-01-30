@@ -9,10 +9,11 @@ import { fetchLocalMapBox, token } from "../../services/mapbox";
 //import AsyncSelect from "react-select/async";
 import Select from 'react-select'
 
-import mapPackage from "../../assets/map/package.svg";
+import mapPackage from "../../assets/map/pin.svg";
 import mapPin from "../../assets/map/pin.svg";
 import { Container, Content } from './styles'
 import { getStates, getCities, getCounties } from '../../services/ibge'
+import CarouselImg from '../../components/CarouselImg'
 
 const initialPosition = { lat: -3.044653, lng: -60.1071926 };
 
@@ -55,7 +56,7 @@ function Maps() {
     const response = await fetchLocalMapBox(inputValue);
 
     let places: any = [];
-    if (inputValue.length < 5) return;
+
     response.features.map((item: any) => {
       places.push({
         label: item.place_name,
@@ -83,8 +84,9 @@ function Maps() {
     setStates(states)
   };
 
-  const loadCities = async (uf: string) => {
+  const loadCities = async (uf: string, name?: string) => {
     setCities([])
+
     const response = await getCities(uf);
 
     let cities: any = [];
@@ -99,9 +101,10 @@ function Maps() {
     setCities(cities)
   };
 
-  const loadCounties = async (city: string) => {
+  const loadCounties = async (city: string, name?: string) => {
     setCounties([])
     const response = await getCounties(city);
+    loadOptions(`${city}, ${name} - Brazil`, (ev: any) => console.log(ev))
 
     let counties: any = [];
 
@@ -165,7 +168,7 @@ function Maps() {
                   options={states}
                   placeholder="Selecionar estado..."
                   onChange={(ev: any) => {
-                    loadCities(ev.value)
+                    loadCities(ev.value, ev.label)
                   }}
                 />
               </div>
@@ -177,7 +180,7 @@ function Maps() {
                   options={cities}
                   placeholder="Selecionar cidade..."
                   onChange={(ev: any) => {
-                    loadCounties(ev.value)
+                    loadCounties(ev.value, ev.label)
                   }}
                 />
               </div>
@@ -191,18 +194,6 @@ function Maps() {
                   placeholder="Selecionar município..."
                 />
               </div>
-
-              {/* <div className="input-block">
-                <label htmlFor="address">Endereço</label>
-                <AsyncSelect
-                  placeholder="Digite o endereço..."
-                  classNamePrefix="filter"
-                  cacheOptions
-                  loadOptions={loadOptions}
-                  onChange={handleChangeSelect}
-                  value={address}
-                />
-              </div> */}
             </fieldset>
 
             <button className="confirm-button" type="submit">
@@ -241,10 +232,11 @@ function Maps() {
                 className="map-popup"
               >
                 <div>
-                  <h3>TEST 1</h3>
+                  <h3>Adotar</h3>
                   <p>
-                    Loreip sum
+                    Cuide bem da área selecionada
                   </p>
+                  <CarouselImg showThumbs={false} latitude={-15.780000} longitude={-47.930000} />
                 </div>
               </Popup>
             </Marker>
