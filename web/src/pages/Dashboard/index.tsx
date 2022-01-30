@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiPower } from 'react-icons/fi';
 import Userdefault from '../../assets/default.png';
-
 import { useAuth } from '../../hooks/auth';
+import CarouselImg from '../../components/CarouselImg';
 
 import {
   Container,
@@ -11,15 +10,15 @@ import {
   HeaderContent,
   Profile,
   Content,
-  Schedule,
+  CarouselWrapper,
   Section,
-  Calendar,
+  Aside,
 } from './styles';
 
 import logoImg from '../../assets/logo.png';
 
 const Dashboard: React.FC = () => {
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
 
   return (
     <Container>
@@ -43,32 +42,24 @@ const Dashboard: React.FC = () => {
               </Link>
             </div>
           </Profile>
-
-          <button type="button" onClick={signOut}>
-            <FiPower />
-          </button>
         </HeaderContent>
       </Header>
 
       <Content>
-        <Schedule>
-          <h1>Ultima atualizacao</h1>
-          <p>
-            aqui show
-          </p>
+        <CarouselWrapper>
+          <CarouselImg latitude={-15.780000} longitude={-47.930000} />
+        </CarouselWrapper>
 
+        <Aside>
           <Section>
-            <strong>outra section</strong>
+            <Link to="/maps">
+              Mapa
+            </Link>
           </Section>
-
           <Section>
-            <strong>mais uma section</strong>
+            <h2>Ultima pesquisa</h2>
           </Section>
-        </Schedule>
-
-        <Calendar>
-          Alertas
-        </Calendar>
+        </Aside>
       </Content>
     </Container>
   );
