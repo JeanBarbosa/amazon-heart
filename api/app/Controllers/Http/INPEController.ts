@@ -24,22 +24,24 @@ export default class INPEController {
 
       const datetime = `${lastMonth}T00:00:00/${currentDate}T23:59:00`
 
+      const collections = [
+        { "name": "AMAZONIA1_WFI_L2_DN" },
+        { "name": "AMAZONIA1_WFI_L4_DN" },
+        { "name": "CBERS4A_MUX_L2_DN" },
+        { "name": "CBERS4A_MUX_L4_DN" },
+        { "name": "CBERS4A_WFI_L2_DN" },
+        { "name": "CBERS4A_WFI_L4_DN" },
+        { "name": "CBERS4A_WPM_L2_DN" },
+        { "name": "CBERS4A_WPM_L4_DN" }
+      ];
+
       const payload = {
         "providers": [
           {
             "name": "INPE-CDSR",
-            "collections": [
-              { "name": "AMAZONIA1_WFI_L2_DN" },
-              { "name": "AMAZONIA1_WFI_L4_DN" },
-              { "name": "CBERS4A_MUX_L2_DN" },
-              { "name": "CBERS4A_MUX_L4_DN" },
-              { "name": "CBERS4A_WFI_L2_DN" },
-              { "name": "CBERS4A_WFI_L4_DN" },
-              { "name": "CBERS4A_WPM_L2_DN" },
-              { "name": "CBERS4A_WPM_L4_DN" }
-            ],
+            "collections": collections,
             "method": "POST",
-            "query": { "cloud_cover": { "lte": 50 } }
+            "query": { "cloud_cover": { "lte": 40 } }
           }
         ],
         "bbox": [parseFloat(longitude), parseFloat(latitude), parseFloat(longitude), parseFloat(latitude)],
@@ -47,9 +49,36 @@ export default class INPEController {
         "limit": 1
       }
 
-      const { data } = await apiINPE.post('stac-compose/stac/search', payload)
+      const { data, status } = await apiINPE.post('stac-compose/stac/search', payload)
 
-      return data
+      if (status !== 200) {
+        return response.status(400).send({
+          error: {
+            message: 'Erro ao buscar os dados do INPE.'
+          }
+        })
+      }
+
+      const obj = data["INPE-CDSR"];
+
+      let satelitesArray: Array<any> = []
+
+      for (let i = 0; i < collections.length; ++i) {
+        for (let x = 0; x < obj[collections[i].name].features.length; ++x) {
+          const satelite = obj[collections[i].name].features[x]
+          const { id, collection, properties, assets } = satelite
+          const { thumbnail } = assets
+
+          satelitesArray.push({
+            id,
+            collection,
+            properties,
+            thumbnail
+          })
+        }
+      }
+
+      return satelitesArray
 
     } catch (error) {
       return response.status(400).send({
