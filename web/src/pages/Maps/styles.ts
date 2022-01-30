@@ -123,28 +123,4 @@ export const Content = styled.div`
   .map-popup .leaflet-popup-tip-container {
     display: none;
   }
-
-  /* Styling react select */
-
-  .filter__control {
-    border-radius: 20px !important;
-
-    width: 100% !important;
-    background: #f5f8fa !important;
-    border: 1px solid #d3e2e5 !important;
-    border-radius: 20px !important;
-    outline: none !important;
-    color: #5c8599 !important;
-  }
-
-  .filter__option {
-    background: #f5f8fa !important;
-    color: #5c8599 !important;
-  }
-
-  .filter__option--is-focused {
-    background: #d3e2e5 !important;
-    color: #010101 !important;
-  }
-
 `;
