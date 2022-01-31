@@ -12,22 +12,10 @@ export default class Heart extends BaseModel {
   public short_description: string
 
   @column()
-  public satellite: string
+  public latitude: number
 
   @column()
-  public sensor: string
-
-  @column()
-  public path: number
-
-  @column()
-  public row: number
-
-  @column()
-  public thumbnail: string
-
-  @column()
-  public coordinates: string
+  public longitude: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

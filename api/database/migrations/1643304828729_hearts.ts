@@ -15,12 +15,8 @@ export default class Hearts extends BaseSchema {
         .onDelete('CASCADE')
       table.string('name', 255).notNullable()
       table.string('short_description', 400)
-      table.string('satellite', 255)
-      table.string('sensor', 80)
-      table.integer('path')
-      table.integer('row')
-      table.text('thumbnail')
-      table.text('coordinates')
+      table.decimal('latitude', 5)
+      table.decimal('longitude', 5)
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
