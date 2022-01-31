@@ -33,6 +33,7 @@ const CarouselImg: React.FC<Props> = ({ latitude, longitude, showThumbs = true }
 
   return (
     <Container>
+      {/* <h1>Ultimas imagens do satelites</h1> */}
       <Carousel
         showThumbs={showThumbs}
         showStatus={false}
@@ -47,8 +48,8 @@ const CarouselImg: React.FC<Props> = ({ latitude, longitude, showThumbs = true }
         showIndicators={showThumbs}
       >
         {
-          satelites.map((item) => (
-            <div className="slide-holder">
+          satelites.map((item, index) => (
+            <div key={index} className="slide-holder">
               <img
                 alt={item.id}
                 src={item.thumbnail.href}
